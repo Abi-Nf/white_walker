@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Lieu {
-  private final Set<Rue> ruesConnécté = new HashSet<>();
+  private final Set<Rue> ruesConnecte = new HashSet<>();
 
   private final String nom;
 
@@ -13,11 +13,11 @@ public class Lieu {
   }
 
   void connecterA(Rue rue){
-    ruesConnécté.add(rue);
+    ruesConnecte.add(rue);
   }
 
   public boolean estConnecterA(Rue rue){
-    return ruesConnécté.contains(rue);
+    return ruesConnecte.contains(rue);
   }
 
   @Override

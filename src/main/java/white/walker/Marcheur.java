@@ -10,32 +10,32 @@ public class Marcheur {
     this.nom = nom;
   }
 
-  public List<Lieu> marche(Carte carte, Lieu départ, Lieu destination){
+  public List<Lieu> marche(Carte carte, Lieu depart, Lieu destination){
     List<Lieu> lieux = new ArrayList<>();
-    lieux.add(départ);
+    lieux.add(depart);
 
     var rues = carte.lesRues();
     while(!lieux.getLast().equals(destination)){
-      var dernierAjouté = lieux.getLast();
-      var rueConnecté = rues
+      var dernierAjoute = lieux.getLast();
+      var rueConnecte = rues
         .stream()
-        .filter(rue -> rue.aCeLieu(dernierAjouté))
+        .filter(rue -> rue.aCeLieu(dernierAjoute))
         .toList();
-      int indexAléatoire = (int) Math.floor(Math.random() * (rueConnecté.size() - 1));
-      if(indexAléatoire == -1) continue;
-      var rueAléatoire = rueConnecté.get(indexAléatoire);
-      var lieuAAller = lieuAAller(rueAléatoire, dernierAjouté, lieux);
+      int indexAleatoire = (int) Math.floor(Math.random() * (rueConnecte.size() - 1));
+      if(indexAleatoire == -1) continue;
+      var rueAleatoire = rueConnecte.get(indexAleatoire);
+      var lieuAAller = lieuAAller(rueAleatoire, dernierAjoute);
       lieux.add(lieuAAller);
-      carte.verifierUnCulDeSac(rueAléatoire, lieuAAller, destination);
+      carte.verifierUnCulDeSac(rueAleatoire, lieuAAller, destination);
     }
     return lieux;
   }
 
-  private static Lieu lieuAAller(Rue rueAléatoire, Lieu dernierAjouté, List<Lieu> lieux) {
-    if (rueAléatoire.getLieuA().equals(dernierAjouté)) {
-      return rueAléatoire.getLieuB();
+  private static Lieu lieuAAller(Rue rueAleatoire, Lieu dernierAjoute) {
+    if (rueAleatoire.getLieuA().equals(dernierAjoute)) {
+      return rueAleatoire.getLieuB();
     }
-    return rueAléatoire.getLieuA();
+    return rueAleatoire.getLieuA();
   }
 
   @Override
