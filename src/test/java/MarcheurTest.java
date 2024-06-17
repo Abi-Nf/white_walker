@@ -1,3 +1,5 @@
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import white.walker.Carte;
 import white.walker.Lieu;
@@ -7,8 +9,10 @@ import white.walker.Rue;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MarcheurTest {
+  private static final Logger logger = LogManager.getLogger(MarcheurTest.class);
+
   @Test
-  public void départ_à_HEI_vers_ESTI(){
+  public void depart_a_HEI_vers_ESTI(){
     var marais = new Lieu("Marais");
     var sekolintsika = new Lieu("sekolintsika");
     var hei = new Lieu("HEI");
@@ -41,16 +45,11 @@ public class MarcheurTest {
     var itineraireDeBjarni  = new Marcheur("Bjarni");
     var lesRuePasse = itineraireDeBjarni.marche(carte, hei, esti);
 
-    System.out.println(lesRuePasse);
+    logger.info(lesRuePasse);
 
     assertFalse(lesRuePasse.isEmpty());
     assertTrue(lesRuePasse.contains(balancoire));
     assertTrue(lesRuePasse.size() > 2);
     assertEquals(esti, lesRuePasse.getLast());
-
-    var rues = carte.lesRues();
-    System.out.println("contient marais - sekolinstsika " + rues.contains(rueMaraisSekolinstsika));
-    System.out.println("contient sekolinstika - hei " + rues.contains(rueSekolintsikaHei));
-    System.out.println("contient pullman - nexta " + rues.contains(ruePullmanNexta));
   }
 }
