@@ -1,7 +1,11 @@
 package white.walker;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Marcheur {
   private final String nom;
@@ -11,31 +15,44 @@ public class Marcheur {
   }
 
   public List<Lieu> marche(Carte carte, Lieu depart, Lieu destination){
-    List<Lieu> lieux = new ArrayList<>();
-    lieux.add(depart);
+    List<Lieu> itineraire = new ArrayList<>();
+    Set<Lieu> visites = new HashSet<>();
 
-    var rues = carte.lesRues();
-    while(!lieux.getLast().equals(destination)){
-      var dernierAjoute = lieux.getLast();
-      var rueConnecte = rues
-        .stream()
-        .filter(rue -> rue.aCeLieu(dernierAjoute))
-        .toList();
-      int indexAleatoire = (int) Math.floor(Math.random() * (rueConnecte.size() - 1));
-      if(indexAleatoire == -1) continue;
-      var rueAleatoire = rueConnecte.get(indexAleatoire);
-      var lieuAAller = lieuAAller(rueAleatoire, dernierAjoute);
-      lieux.add(lieuAAller);
-      carte.verifierUnCulDeSac(rueAleatoire, lieuAAller, destination);
+    List<Lieu> lieuAVisite = new ArrayList<>();
+    Map<Lieu, Lieu> sensDeLItineraire = new HashMap<>();
+
+    lieuAVisite.add(depart);
+    visites.add(depart);
+
+    while (!lieuAVisite.isEmpty()) {
+      Lieu lieuCourant = lieuAVisite.removeFirst();
+
+      if (lieuCourant.equals(destination)) {
+        while (lieuCourant != null) {
+          itineraire.addFirst(lieuCourant);
+          lieuCourant = sensDeLItineraire.get(lieuCourant);
+        }
+        return itineraire;
+      }
+
+      for (Rue rue : carte.lesRues()) {
+        if (rue.aCeLieu(lieuCourant)) {
+          var lieuAuVoisinage = lieuAAller(rue, lieuCourant);
+          if (!visites.contains(lieuAuVoisinage)) {
+            visites.add(lieuAuVoisinage);
+            lieuAVisite.add(lieuAuVoisinage);
+            sensDeLItineraire.put(lieuAuVoisinage, lieuCourant);
+          }
+        }
+      }
     }
-    return lieux;
+
+    return itineraire;
   }
 
-  private static Lieu lieuAAller(Rue rueAleatoire, Lieu dernierAjoute) {
-    if (rueAleatoire.getLieuA().equals(dernierAjoute)) {
-      return rueAleatoire.getLieuB();
-    }
-    return rueAleatoire.getLieuA();
+  private static Lieu lieuAAller(Rue rue, Lieu pointDeRepere) {
+    if (rue.getLieuA().equals(pointDeRepere)) return rue.getLieuB();
+    return rue.getLieuA();
   }
 
   @Override
