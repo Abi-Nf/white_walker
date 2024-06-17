@@ -21,13 +21,4 @@ public class Carte {
   public Set<Rue> lesRues() {
     return ensembleDeRue;
   }
-
-  void verifierUnCulDeSac(Rue rue, Lieu point, Lieu destination){
-    var rueContinue = ensembleDeRue
-      .stream()
-      .filter(v -> !v.aCeLieu(destination))
-      .filter(v -> v.aCeLieu(point))
-      .count();
-    if(rueContinue == 1) ensembleDeRue.remove(rue);
-  }
 }
