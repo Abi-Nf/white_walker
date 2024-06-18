@@ -43,7 +43,7 @@ public class MarcheurTest {
     carte.ajouterUneRue(boulevardDeLEurope, esti);
 
     var itineraireDeBjarni  = new Marcheur("Bjarni");
-    var lesRuePasse = itineraireDeBjarni.marche(carte, hei, esti);
+    var lesRuePasse = itineraireDeBjarni.marche(hei, esti);
 
     logger.info(lesRuePasse);
 

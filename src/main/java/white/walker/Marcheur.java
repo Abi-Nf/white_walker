@@ -1,11 +1,6 @@
 package white.walker;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Marcheur {
   private final String nom;
@@ -14,37 +9,21 @@ public class Marcheur {
     this.nom = nom;
   }
 
-  public List<Lieu> marche(Carte carte, Lieu depart, Lieu destination){
+  public List<Lieu> marche(Lieu depart, Lieu destination){
     List<Lieu> itineraire = new ArrayList<>();
-    Set<Lieu> visites = new HashSet<>();
+    itineraire.add(depart);
 
-    List<Lieu> lieuAVisite = new ArrayList<>();
-    Map<Lieu, Lieu> sensDeLItineraire = new HashMap<>();
-
-    lieuAVisite.add(depart);
-    visites.add(depart);
-
-    while (!lieuAVisite.isEmpty()) {
-      Lieu lieuCourant = lieuAVisite.removeFirst();
-
-      if (lieuCourant.equals(destination)) {
-        while (lieuCourant != null) {
-          itineraire.addFirst(lieuCourant);
-          lieuCourant = sensDeLItineraire.get(lieuCourant);
-        }
-        return itineraire;
-      }
-
-      for (Rue rue : carte.lesRues()) {
-        if (rue.aCeLieu(lieuCourant)) {
-          var lieuAuVoisinage = lieuAAller(rue, lieuCourant);
-          if (!visites.contains(lieuAuVoisinage)) {
-            visites.add(lieuAuVoisinage);
-            lieuAVisite.add(lieuAuVoisinage);
-            sensDeLItineraire.put(lieuAuVoisinage, lieuCourant);
-          }
-        }
-      }
+    while (!itineraire.getLast().equals(destination)){
+      var dernierLieuDeLItineraire = itineraire.getLast();
+      var routes = dernierLieuDeLItineraire
+        .lesRuesPossible()
+        .stream()
+        .toList();
+      if (routes.isEmpty()) break;
+      var indexAleatoire = (int) Math.floor(Math.random() * routes.size());
+      var routeAleatoire = routes.get(indexAleatoire);
+      var lieuAAller = lieuAAller(routeAleatoire, dernierLieuDeLItineraire);
+      itineraire.add(lieuAAller);
     }
 
     return itineraire;
