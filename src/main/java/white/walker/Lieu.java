@@ -12,6 +12,10 @@ public class Lieu {
     this.nom = nom;
   }
 
+  public Set<Rue> lesRuesPossible() {
+    return lesRuesPossible;
+  }
+
   void connecterA(Rue rue){
     lesRuesPossible.add(rue);
   }
