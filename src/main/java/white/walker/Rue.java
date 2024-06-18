@@ -3,12 +3,11 @@ package white.walker;
 import java.util.Objects;
 
 public class Rue {
-  private String rue;
+  private final String rue;
   private final Lieu a, b;
 
   public Rue(Lieu a, Lieu b) {
-    this.a = a;
-    this.b = b;
+    this(null, a, b);
   }
 
   public Rue(String name, Lieu a, Lieu b){
